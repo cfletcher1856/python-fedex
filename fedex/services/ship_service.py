@@ -71,11 +71,11 @@ class FedexProcessShipmentRequest(FedexBaseService):
         # Link the RecipientParty object to our master data structure.
         self.RequestedShipment.Recipient = RecipientParty
 
+        Party = self.client.factory.create('Party')
+        Party.AccountNumber = self._config_obj.account_number
+
         Payor = self.client.factory.create('Payor')
-        # Grab the account number from the FedexConfig object by default.
-        Payor.AccountNumber = self._config_obj.account_number
-        # Assume US.
-        Payor.CountryCode = 'US'
+        Payor.ResponsibleParty = Party
 
         ShippingChargesPayment = self.client.factory.create('Payment')
         ShippingChargesPayment.Payor = Payor
