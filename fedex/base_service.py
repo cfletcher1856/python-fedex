@@ -11,6 +11,7 @@ import logging
 import suds
 from suds.client import Client
 
+
 class FedexBaseServiceException(Exception):
     """
     Exception: Serves as the base exception that other service-related
@@ -19,10 +20,13 @@ class FedexBaseServiceException(Exception):
     def __init__(self, error_code, value):
         self.error_code = error_code
         self.value = value
+
     def __unicode__(self):
         return "%s (Error code: %s)" % (repr(self.value), self.error_code)
+
     def __str__(self):
         return self.__unicode__()
+
 
 class FedexFailure(FedexBaseServiceException):
     """
@@ -31,11 +35,13 @@ class FedexFailure(FedexBaseServiceException):
     """
     pass
 
+
 class FedexError(FedexBaseServiceException):
     """
     Exception: These are generally problems with the client-provided data.
     """
     pass
+
 
 class SchemaValidationError(FedexBaseServiceException):
     """
@@ -44,6 +50,7 @@ class SchemaValidationError(FedexBaseServiceException):
     def __init__(self):
         self.error_code = -1
         self.value = "suds encountered an error validating your data against this service's WSDL schema. Please double-check for missing or invalid values, filling all required fields."
+
 
 class FedexBaseService(object):
     """
