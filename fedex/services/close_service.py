@@ -59,22 +59,6 @@ class SmartPostCloseShipmentRequest(FedexBaseService):
         """
         self.send_request(send_function=self._assemble_and_send_validation_request)
 
-    def _assemble_and_send_validation_request(self):
-        """
-        Fires off the Fedex Smart Post Close validation request.
-
-        @warning: NEVER CALL THIS METHOD DIRECTLY. CALL
-            send_validation_request(), WHICH RESIDES ON FedexBaseService
-            AND IS INHERITED.
-        """
-        # Fire off the query.
-        response = self.client.service.validateShipment(WebAuthenticationDetail=self.WebAuthenticationDetail,
-                                        ClientDetail=self.ClientDetail,
-                                        TransactionDetail=self.TransactionDetail,
-                                        Version=self.VersionId,
-                                        SmartPostCloseRequest=self.SmartPostCloseRequest)
-        return response
-
     def _assemble_and_send_request(self):
         """
         Fires off the Fedex request.
