@@ -29,8 +29,6 @@ class SmartPostCloseShipmentRequest(FedexBaseService):
         self._version_info = {'service_id': 'clos', 'major': '2',
                              'intermediate': '0', 'minor': '0'}
 
-        self.RequestedShipment = None
-        """@ivar: Holds the RequestedShipment WSDL object."""
         # Call the parent FedexBaseService class for basic setup work.
         super(SmartPostCloseShipmentRequest, self).__init__(self._config_obj,
                                                          'CloseService_v2.wsdl',
@@ -42,22 +40,12 @@ class SmartPostCloseShipmentRequest(FedexBaseService):
         the data structure and get it ready for the WSDL request.
         """
         # This is the primary data structure for processShipment requests.
-        self.SmartPostCloseRequest = self.client.factory.create('SmartPostCloseRequest')
-        self.SmartPostCloseRequest.HubId = None
-        self.SmartPostCloseRequest.DestinationCountryCode = 'US'
-        self.SmartPostCloseRequest.PickUpCarrier = 'FXSP'
+        self.HubId = None
+        self.DestinationCountryCode = 'US'
+        self.PickUpCarrier = None
         # This is good to review if you'd like to see what the data structure
         # looks like.
-        self.logger.debug(self.SmartPostCloseRequest)
-
-    def send_validation_request(self):
-        """
-        This is very similar to just sending the close via the typical
-        send_request() function, but this doesn't create a close. It is
-        used to make sure "good" values are given by the user or the
-        application using the library.
-        """
-        self.send_request(send_function=self._assemble_and_send_validation_request)
+        #self.logger.debug(self.SmartPostCloseRequest)
 
     def _assemble_and_send_request(self):
         """
@@ -71,5 +59,7 @@ class SmartPostCloseShipmentRequest(FedexBaseService):
                                         ClientDetail=self.ClientDetail,
                                         TransactionDetail=self.TransactionDetail,
                                         Version=self.VersionId,
-                                        SmartPostCloseRequest=self.SmartPostCloseRequest)
+                                        HubId=self.HubId,
+                                        DestinationCountryCode=self.DestinationCountryCode,
+                                        PickUpCarrier=self.PickUpCarrier)
         return response
